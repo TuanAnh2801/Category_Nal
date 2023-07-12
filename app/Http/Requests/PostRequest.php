@@ -26,7 +26,7 @@ class PostRequest extends FormRequest
             'content' => 'string',
             'status' => 'in:draft,published,archived',
             'type' => 'string',
-            'categories' => 'required|array',
+            'category' => 'required|array',
 
         ];
     }
