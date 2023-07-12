@@ -19,9 +19,6 @@ class PostController extends BaseController
 
     public function store(PostRequest $request, Post $post)
     {
-        if ($post) {
-
-
             $user = Auth::id();
             $categoryId = $request->category;
             $post->title = $request->title;
@@ -32,12 +29,7 @@ class PostController extends BaseController
             $post->slug = Str::slug($request->title);
             $post->save();
             $post->categories()->attach($categoryId);
-
-
             return $this->handleRespondSuccess('create success', $post);
-        }
-        return $this->handleRespondError('post does not exist');
-
     }
 
     public function update(PostRequest $request, Post $post)
