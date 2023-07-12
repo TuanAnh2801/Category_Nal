@@ -43,6 +43,7 @@ class CategoryController extends BaseController
         $image = $request->image;
         if (!$image) {
             $category->update($request->all());
+            $category->slug = Str::slug($request->name);
             return $this->handleRespondSuccess('update success', $category);
         }
         $imageName = Str::random(10);
@@ -51,6 +52,7 @@ class CategoryController extends BaseController
         $imagePath = $image->storeAs('public/upload/' . date('Y/m/d'), $imageName);
         $imageUrl = asset(Storage::url($imagePath));
         $category->fill($request->all());
+        $category->slug = Str::slug($request->name);
         $category->url_image = $imageUrl;
         $category->save();
         return $this->handleRespondSuccess('update success', $category);
