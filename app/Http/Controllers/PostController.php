@@ -19,17 +19,17 @@ class PostController extends BaseController
 
     public function store(PostRequest $request, Post $post)
     {
-            $user = Auth::id();
-            $categoryId = $request->category;
-            $post->title = $request->title;
-            $post->description = $request->description;
-            $post->status = $request->status;
-            $post->type = $request->type;
-            $post->user_id = $user;
-            $post->slug = Str::slug($request->title);
-            $post->save();
-            $post->categories()->attach($categoryId);
-            return $this->handleRespondSuccess('create success', $post);
+        $user = Auth::id();
+        $categoryId = $request->category;
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->status = $request->status;
+        $post->type = $request->type;
+        $post->user_id = $user;
+        $post->slug = Str::slug($request->title);
+        $post->save();
+        $post->categories()->attach($categoryId);
+        return $this->handleRespondSuccess('create success', $post);
     }
 
     public function update(PostRequest $request, Post $post)
