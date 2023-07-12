@@ -12,8 +12,7 @@ class PostController extends BaseController
 
     public function show(Post $post)
     {
-        $data = $post;
-        $post->load('categories');
+        $data = $post->load('categories');
         return $this->handleRespondSuccess('data', $data);
 
     }
@@ -56,8 +55,8 @@ class PostController extends BaseController
 
     public function destroy(Post $post)
     {
-        $post->delete();
         $post->categories()->detach($post->id);
+        $post->delete();
         return $this->handleRespondSuccess('delete success', []);
 
     }
