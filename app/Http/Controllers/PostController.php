@@ -19,20 +19,25 @@ class PostController extends BaseController
 
     public function store(PostRequest $request, Post $post)
     {
-        $user = Auth::id();
-        $categoryId = $request->category;
-        $post->title = $request->title;
-        $post->description = $request->description;
-        $post->status = $request->status;
-        $post->type = $request->type;
-        $post->user_id = $user;
-        $post->slug = Str::slug($request->title);
-        $post->save();
-        foreach ($categoryId as $category) {
-            $post->categories()->attach($category);
-        }
+        if ($post) {
 
-        return $this->handleRespondSuccess('create success', $post);
+
+            $user = Auth::id();
+            $categoryId = $request->category;
+            $post->title = $request->title;
+            $post->description = $request->description;
+            $post->status = $request->status;
+            $post->type = $request->type;
+            $post->user_id = $user;
+            $post->slug = Str::slug($request->title);
+            $post->save();
+            $post->categories()->attach($categoryId);
+
+
+            return $this->handleRespondSuccess('create success', $post);
+        }
+        return $this->handleRespondError('post does not exist');
+
     }
 
     public function update(PostRequest $request, Post $post)
@@ -45,11 +50,8 @@ class PostController extends BaseController
         $post->slug = Str::slug($request->title);
         $post->save();
         $post->categories()->detach();
-        foreach ($categoryId as $category) {
-            $post->categories()->attach($category);
-        }
+        $post->categories()->attach($categoryId);
         return $this->handleRespondSuccess('update success', $post);
-
     }
 
 
