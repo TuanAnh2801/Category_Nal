@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\CategoryController;
-
+use App\Http\Controllers\PostController;
 Route::post('/auth/login', [
     AuthController::class, 'login'
 ]);
@@ -38,9 +38,17 @@ Route::group([
 ], function () {
     Route::post('/create', [CategoryController::class, 'store']);
     Route::post('/update/{category}', [CategoryController::class, 'update']);
-    Route::get('/index', [CategoryController::class, 'index']);
+    Route::get('/', [CategoryController::class, 'index']);
     Route::post('/delete/{category}', [CategoryController::class, 'destroy']);
 });
-
-
+// post
+Route::group([
+    'middlaware' => 'jwt.auth',
+    'prefix' => 'post'
+], function () {
+    Route::post('/create', [PostController::class, 'store']);
+    Route::post('/update/{post}', [PostController::class, 'update']);
+    Route::get('/{post}', [PostController::class, 'show']);
+    Route::post('/delete/{post}', [PostController::class, 'destroy']);
+});
 

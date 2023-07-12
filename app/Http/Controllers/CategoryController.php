@@ -19,18 +19,19 @@ class CategoryController extends BaseController
         return $this->handleRespondSuccess('data', $category);
     }
 
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request, Category $category)
     {
         $user = Auth::id();
-        $category = new Category();
         $image = $request->image;
-        $category->fill($request->all());
         if ($image) {
             $imageName = Str::random(10);
             $imagePath = $image->storeAs('public/upload/' . date('Y/m/d'), $imageName);
             $imageUrl = asset(Storage::url($imagePath));
             $category->url_image = $imageUrl;
         }
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->type = $request->type;
         $category->user_id = $user;
         $category->slug = Str::slug($request->name);
         $category->save();
@@ -51,7 +52,9 @@ class CategoryController extends BaseController
         Storage::delete($path);
         $imagePath = $image->storeAs('public/upload/' . date('Y/m/d'), $imageName);
         $imageUrl = asset(Storage::url($imagePath));
-        $category->fill($request->all());
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->type = $request->type;
         $category->slug = Str::slug($request->name);
         $category->url_image = $imageUrl;
         $category->save();
