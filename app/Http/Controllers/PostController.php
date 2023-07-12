@@ -55,7 +55,6 @@ class PostController extends BaseController
 
     public function destroy(Post $post)
     {
-        $post->categories()->detach();
         $post->delete();
         return $this->handleRespondSuccess('delete success', []);
 
